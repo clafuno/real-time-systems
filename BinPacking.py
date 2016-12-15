@@ -49,8 +49,10 @@ def binAddFF(item, peso):
     #print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
-    ......
-
+    # check "occupation level" of cores
+    # Assign to the least occupied BUT != 0
+    # if "occupation level + peso" > 1 --> Assign to 1st empty core
+    
     if (allocated == 0):
         raise
 
@@ -58,7 +60,8 @@ def binAddNF(item, peso):
     #print "addNF", item, peso
     global nextBin
     allocated = 0
-    .......
+    # Assign to the same core as last one
+    # if "occupation level + peso" > 1 --> Assign to 1st empty core
 
     if (allocated == 0):
         raise
@@ -68,7 +71,10 @@ def binAddBF(item, peso):
     #print "addBF", item, peso
     global Pesos
     allocated = 0
-    ......
+    # check "occupation level" of cores
+    # Assign to the most occupied one
+    # - IF same occupation --> Assign to lower index
+    # if "occupation level + peso" > 1 --> Assign to 1st empty core
 
     if (allocated == 0):
         raise
@@ -77,7 +83,9 @@ def binAddWF(item, peso):
     #print "addWF", item, peso
     global Pesos
     allocated = 0
-    ......
+    # check "occupation level" of cores
+    # Assign to the least occupied one
+    # - IF same occupation --> Assign to lower index
 
     if (allocated == 0):
         raise
