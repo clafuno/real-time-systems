@@ -12,15 +12,17 @@ init = 0
 
 def initBin(metodo, nbins):
     global politica,  NBins, Pesos, init, nextBin
-    if (metodo in politicas):
+    if (metodo in politicas): # checks if the policy is among the ones in list
         politica = metodo;
     else:
         raise Invalid_Param      # genera una excepcion si no existe
-    if (nbins >0):
+
+    if (nbins >0): #checks if the introduced # of bins is real
         NBins = nbins
     else:
         raise Invalid_Param
-    Pesos = [0.0] * NBins
+
+    Pesos = [0.0] * NBins # array of weights (# elements = # bins)
     for i in range(NBins):
         Bins[i] = []
     init = 1
@@ -34,11 +36,11 @@ def binAdd(item, peso):
         if (politica is "FF"):
             binAddFF(item, peso)
         elif (politica is "NF"):
-                   binAddNF(item, peso)
+            binAddNF(item, peso)
         elif (politica is "BF"):
-                   binAddBF(item, peso)
+            binAddBF(item, peso)
         elif (politica is "WF"):
-                   binAddWF(item, peso)
+            binAddWF(item, peso)
     except:
         raise
 
@@ -107,3 +109,5 @@ def show():
     for i in range(len(Pesos)):
         spesos += Pesos[i]
     print "Bins:", Bins, "\n Pesos:", Pesos, "Suma Pesos: ",spesos
+
+
