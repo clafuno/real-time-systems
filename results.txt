@@ -1,0 +1,29 @@
+Resultados que se obtienen (podría dar el mismo resultado con valores en otras posiciones)
+$ ./provaBins.py
+Error en la inicializacion
+[('P5', 0.12), ('P2', 0.16), ('P3', 0.2), ('P8', 0.27), ('P1', 0.36), ('P6', 0.38), ('P7', 0.45), ('P4', 0.46), ('P9', 0.57)]
+Error: WF , Not Allocated
+Worst-Fit Incremental:
+Bins: {0: ['P5', 'P1'], 1: ['P2', 'P6'], 2: ['P3', 'P7'], 3: ['P8', 'P4']}
+ Pesos: [0.48, 0.54, 0.65, 0.73] Suma Pesos:  2.4
+Worst-Fit Decremental:
+Bins: {0: ['P9', 'P2'], 1: ['P4', 'P3', 'P5'], 2: ['P7', 'P8'], 3: ['P6', 'P1']}
+ Pesos: [0.73, 0.78, 0.72, 0.74] Suma Pesos:  2.97
+Best-Fit Incremental:
+Bins: {0: ['P9'], 1: ['P7', 'P4'], 2: ['P1', 'P6'], 3: ['P5', 'P2', 'P3', 'P8']}
+ Pesos: [0.57, 0.91, 0.74, 0.75] Suma Pesos:  2.97
+Best-Fit Decremental:
+Bins: {0: ['P9', 'P2'], 1: ['P4', 'P3', 'P5'], 2: ['P7', 'P8'], 3: ['P6', 'P1']}
+ Pesos: [0.73, 0.78, 0.72, 0.74] Suma Pesos:  2.97
+First-Fit Incremental:
+Bins: {0: ['P5', 'P2', 'P3', 'P8'], 1: ['P1', 'P6'], 2: ['P7', 'P4'], 3: ['P9']}
+ Pesos: [0.75, 0.74, 0.91, 0.57] Suma Pesos:  2.97
+First-Fit Decremental:
+Bins: {0: ['P9', 'P6'], 1: ['P4', 'P7'], 2: ['P1', 'P8', 'P3', 'P2'], 3: ['P5']}
+ Pesos: [0.95, 0.91, 0.9900000000000001, 0.12] Suma Pesos:  2.97
+Next-Fit Incremental:
+Bins: {0: ['P5', 'P2', 'P3', 'P8'], 1: ['P1', 'P6'], 2: ['P7', 'P4'], 3: ['P9']}
+ Pesos: [0.75, 0.74, 0.91, 0.57] Suma Pesos:  2.97
+Next-Fit Decremental:
+Bins: {0: ['P9'], 1: ['P4', 'P7'], 2: ['P6', 'P1'], 3: ['P8', 'P3', 'P2', 'P5']}
+ Pesos: [0.57, 0.91, 0.74, 0.75] Suma Pesos:  2.97
