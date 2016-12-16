@@ -45,11 +45,33 @@ def binAdd(item, peso):
         raise
 
 
+def sortBins(Bins, Pesos):
+    sorted_by_pesos = [(Bins,Pesos) for (Pesos,Bins) in sorted(zip(Pesos,Bins)), key=lambda pair:pair[0]]
+    return sorted_by_pesos[0],sorted_by_pesos[1]
+
 def binAddFF(item, peso):
     #print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
     # check "occupation level" of cores
+    Bins,Pesos = sortBins(Bins,Pesos)
+    
+    if Pesos.count(0) == NBins:
+        Bins[0].add(item)
+        Pesos[0] += peso
+        allocated = 1
+
+    else:
+        if (Pesos[Pesos.count(0)] + peso) <= 1:
+            Bins[Pesos.count(0)].add(item)
+            Pesos[Pesos.count(0)] += peso 
+            allocated = 1
+        else
+            Bins[Pesos.count(0)-1].add(item)
+            Pesos[Pesos.count(0)-1] += peso 
+            allocated = 1
+
+
     # Assign to the least occupied BUT != 0
     # if "occupation level + peso" > 1 --> Assign to 1st empty core
     
