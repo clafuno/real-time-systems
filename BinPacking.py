@@ -12,15 +12,17 @@ init = 0
 
 def initBin(metodo, nbins):
     global politica,  NBins, Pesos, init, nextBin
-    if (metodo in politicas):
+    if (metodo in politicas): # checks if the policy is among the ones in list
         politica = metodo;
     else:
         raise Invalid_Param      # genera una excepcion si no existe
-    if (nbins >0):
+
+    if (nbins >0): #checks if the introduced # of bins is real
         NBins = nbins
     else:
         raise Invalid_Param
-    Pesos = [0.0] * NBins
+
+    Pesos = [0.0] * NBins # array of weights (# elements = # bins)
     for i in range(NBins):
         Bins[i] = []
     init = 1
@@ -34,21 +36,45 @@ def binAdd(item, peso):
         if (politica is "FF"):
             binAddFF(item, peso)
         elif (politica is "NF"):
-                   binAddNF(item, peso)
+            binAddNF(item, peso)
         elif (politica is "BF"):
-                   binAddBF(item, peso)
+            binAddBF(item, peso)
         elif (politica is "WF"):
-                   binAddWF(item, peso)
+            binAddWF(item, peso)
     except:
         raise
 
+
+def sortBins(Bins, Pesos):
+    sorted_by_pesos = [(Bins,Pesos) for (Pesos,Bins) in sorted(zip(Pesos,Bins)), key=lambda pair:pair[0]]
+    return sorted_by_pesos[0],sorted_by_pesos[1]
 
 def binAddFF(item, peso):
     #print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
-    ......
+    # check "occupation level" of cores
+    Bins,Pesos = sortBins(Bins,Pesos)
+    
+    if Pesos.count(0) == NBins:
+        Bins[0].add(item)
+        Pesos[0] += peso
+        allocated = 1
 
+    else:
+        if (Pesos[Pesos.count(0)] + peso) <= 1:
+            Bins[Pesos.count(0)].add(item)
+            Pesos[Pesos.count(0)] += peso 
+            allocated = 1
+        else
+            Bins[Pesos.count(0)-1].add(item)
+            Pesos[Pesos.count(0)-1] += peso 
+            allocated = 1
+
+
+    # Assign to the least occupied BUT != 0
+    # if "occupation level + peso" > 1 --> Assign to 1st empty core
+    
     if (allocated == 0):
         raise
 
@@ -56,7 +82,8 @@ def binAddNF(item, peso):
     #print "addNF", item, peso
     global nextBin
     allocated = 0
-    .......
+    # Assign to the same core as last one
+    # if "occupation level + peso" > 1 --> Assign to 1st empty core
 
     if (allocated == 0):
         raise
@@ -66,7 +93,10 @@ def binAddBF(item, peso):
     #print "addBF", item, peso
     global Pesos
     allocated = 0
-    ......
+    # check "occupation level" of cores
+    # Assign to the most occupied one
+    # - IF same occupation --> Assign to lower index
+    # if "occupation level + peso" > 1 --> Assign to 1st empty core
 
     if (allocated == 0):
         raise
@@ -75,7 +105,9 @@ def binAddWF(item, peso):
     #print "addWF", item, peso
     global Pesos
     allocated = 0
-    ......
+    # check "occupation level" of cores
+    # Assign to the least occupied one
+    # - IF same occupation --> Assign to lower index
 
     if (allocated == 0):
         raise
@@ -107,3 +139,5 @@ def show():
     for i in range(len(Pesos)):
         spesos += Pesos[i]
     print "Bins:", Bins, "\n Pesos:", Pesos, "Suma Pesos: ",spesos
+
+
