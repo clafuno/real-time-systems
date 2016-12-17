@@ -45,27 +45,32 @@ def binAdd(item, peso):
         raise
 
 
-def sortBins(Bins, Pesos):
-    for i in Bins:
-        sortedBins = [i, Bins[i][0]]
+# def sortBins(Bins, Pesos):
+#     for i in Bins:
+#         sortedBins = [i, Bins[i][0]]
 
-    sorted_by_pesos = [(Bins,Pesos) for (Pesos,Bins) in sorted(zip(Pesos,Bins)), key=lambda pair:pair[0]]
-    return sorted_by_pesos[0],sorted_by_pesos[1]
+#     sorted_by_pesos = [(Bins,Pesos) for (Pesos,Bins) in sorted(zip(Pesos,Bins)), key=lambda pair:pair[0]]
+#     return sorted_by_pesos[0],sorted_by_pesos[1]
 
 def binAddFF(item, peso):
     #print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
     i = 0
+    print "FF policy"
     # check "occupation level" of cores
     
-    for i in NBins: # Check number of empty bins
+    for i in range(NBins): # Check number of empty bins
         if Bins[i] == 0.0:
             i += 1
     print i
 
     if i == NBins: # All bins are empty
-        Bins[0].append(item)
+        print "All bins are empty"
+        Pesos[0] = Bins[0] + peso
+        print Pesos
+        Bins[0] = [Pesos[0], item]
+        print Bins[0]
         Bins[0][0] += peso
         allocated = 1
 
