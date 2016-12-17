@@ -11,24 +11,24 @@ def main (argv):
     Particiones = [("P1", 0.36), ("P2", 0.16), ("P3", 0.20), ("P4", 0.46), ("P5", 0.12), ("P6", 0.38), ("P7", 0.45), ("P8", 0.27), ("P9", 0.57)]
 
     try:
-        BinPacking.initBin("KF", 4)
+        BinPacking.initBin("FF", 4)
     except:
         print "Error en la inicializacion"
 
 
-# Worst-fit ############################################################
+# First-fit ############################################################
     pIncr = sorted(Particiones, key=lambda Particiones: Particiones[1])
     print pIncr
 
     try:
-        BinPacking.initBin("WF", 4)
+        BinPacking.initBin("FF", 4)
         lst = pIncr
         while (len(lst) > 0):
                 part = lst.pop(0)
                 BinPacking.binAdd(part[0], part[1])
     except:
-        print "Error: WF , Not Allocated"
-    print "Worst-Fit Incremental:"
+        print "Error: FF , Not Allocated"
+    print "First-Fit Incremental:"
     BinPacking.show()
 
 main (sys.argv)
