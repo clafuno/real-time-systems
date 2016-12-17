@@ -30,3 +30,5 @@ def main (argv):
         print "Error: WF , Not Allocated"
     print "Worst-Fit Incremental:"
     BinPacking.show()
+
+main (sys.argv)
