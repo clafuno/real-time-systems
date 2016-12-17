@@ -4,7 +4,7 @@ import random
 politicas = ("FF", "NF", "BF", "WF")
 politica = ""
 NBins = 0
-Bins = {}
+Bins = []
 Pesos = []
 nextBin = 0
 init = 0
@@ -22,11 +22,12 @@ def initBin(metodo, nbins):
     else:
         raise Invalid_Param
 
-    Pesos = [0.0] * NBins # array of weights (# elements = # bins)
     for i in range(NBins):
-        Bins[i] = []
+        Bins[i] = [i,0.0,[]] # List of bin - total weight - processes
+        
     init = 1
     nextBin = 0
+    print "Successful"
 
 def binAdd(item, peso):
 # "anade un item a una de las lista con un peso de acuerdo al metodo y criterio definido en initBins"
@@ -34,6 +35,7 @@ def binAdd(item, peso):
 
     try:
         if (politica is "FF"):
+            print "Policy FF"
             binAddFF(item, peso)
         elif (politica is "NF"):
             binAddNF(item, peso)
@@ -46,31 +48,43 @@ def binAdd(item, peso):
 
 
 def sortBins(Bins, Pesos):
-    sorted_by_pesos = [(Bins,Pesos) for (Pesos,Bins) in sorted(zip(Pesos,Bins)), key=lambda pair:pair[0]]
+    #tuplas = zip(Pesos,Bins)
+    #sorted_tuplas = sorted(tuplas, key = lambda pair:pair[0])
+    print "Sort more stuff"
+    sorted_by_pesos = [(Bins,Pesos) for (Pesos,Bins) in sorted(zip(Pesos,Bins), key=lambda pair:pair[0])]
+    print sorted_by_pesos
+
     return sorted_by_pesos[0],sorted_by_pesos[1]
 
 def binAddFF(item, peso):
-    #print "addFF", item, peso, NBins
+    print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
     # check "occupation level" of cores
-    Bins,Pesos = sortBins(Bins,Pesos)
+    print "Sort things"
+    #Bins,Pesos = sortBins(Bins,Pesos)
+    #sorted_by_pesos = [(Bins,Pesos) for (Pesos,Bins) in sorted(zip(Pesos,Bins), key=lambda pair:pair[0])]
+    #Bins, Pesos = sorted_by_pesos[0],sorted_by_pesos[1]
+    print "A"
     
     if Pesos.count(0) == NBins:
         Bins[0].add(item)
         Pesos[0] += peso
         allocated = 1
+        print "Allocated!"
 
     else:
         if (Pesos[Pesos.count(0)] + peso) <= 1:
             Bins[Pesos.count(0)].add(item)
             Pesos[Pesos.count(0)] += peso 
             allocated = 1
-        else
+            print "Allocated!"
+
+        else:
             Bins[Pesos.count(0)-1].add(item)
             Pesos[Pesos.count(0)-1] += peso 
             allocated = 1
-
+            print "Allocated!"
 
     # Assign to the least occupied BUT != 0
     # if "occupation level + peso" > 1 --> Assign to 1st empty core
