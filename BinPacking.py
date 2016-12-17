@@ -24,7 +24,7 @@ def initBin(metodo, nbins):
 
     for i in range(NBins):
         Bins[i] = [i,0.0,[]] # List of bin - total weight - processes
-        
+    print "Bins"
     init = 1
     nextBin = 0
     print "Successful"
