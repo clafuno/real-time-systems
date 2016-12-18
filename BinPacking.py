@@ -57,24 +57,31 @@ def binAddFF(item, peso):
         Pesos.append(Bins[i][1])
     #print Pesos
 
-    if Pesos.count(0.0) == NBins:
-        #print "All bins are empty"
-        Bins[0][2].append(item)
-        Bins[0][1] += peso
-        allocated = 1
+    for i in range(NBins):
+        if (Pesos[i] + peso) <= 1: # If it fits
+            Bins[i][2].append(item)
+            Bins[i][1] += peso
+            allocated = 1
+            break
 
-    else:
-        sortedBins = sorted(Bins, key=lambda peso:peso[1])
-        #print sortedBins
-        i = Pesos.count(0)
-        if (sortedBins[i][1] + peso) > 1:
-            sortedBins[0][2].append(item)
-            sortedBins[0][1] += peso
-            allocated = 1
-        else:
-            sortedBins[i][2].append(item)
-            sortedBins[i][1] += peso
-            allocated = 1
+    # if Pesos.count(0.0) == NBins:
+    #     #print "All bins are empty"
+    #     Bins[0][2].append(item)
+    #     Bins[0][1] += peso
+    #     allocated = 1
+
+    # else:
+    #     sortedBins = sorted(Bins, key=lambda peso:peso[1])
+    #     #print sortedBins
+    #     i = Pesos.count(0)
+    #     if (sortedBins[i][1] + peso) > 1:
+    #         sortedBins[0][2].append(item)
+    #         sortedBins[0][1] += peso
+    #         allocated = 1
+    #     else:
+    #         sortedBins[i][2].append(item)
+    #         sortedBins[i][1] += peso
+    #         allocated = 1
 
     if (allocated == 0):
         raise
