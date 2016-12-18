@@ -8,11 +8,11 @@ def main (argv):
 #Bins  creation
     Particiones = [("P1", 0.36), ("P2", 0.16), ("P3", 0.20), ("P4", 0.46), ("P5", 0.12), ("P6", 0.38), ("P7", 0.45), ("P8", 0.27), ("P9", 0.57)]
 
-    try:
-    	print"Start binPacking"
-        BinPacking.initBin("FF", 4)
-    except:
-        print "Error en la inicializacion"
+    # try:
+    # 	print"Start binPacking"
+    #     BinPacking.initBin("FF", 4)
+    # except:
+    #     print "Error en la inicializacion"
 
 
 # first-fit ############################################################
