@@ -123,17 +123,19 @@ def binAddBF(item, peso):
 
     sortedBins = sorted(Bins, key=lambda peso:peso[1])
 
-    if Pesos.count(max(Pesos)) != 1: #¿?¿?
+    if Pesos.count(max(Pesos)) != 1: #??
         i = Pesos.count(max(Pesos))
+        print i
         j =  NBins - i #Index of max with lower index
+        print j
         #check if it fits
         if (sortedBins[j][1] + peso) > 1:
             sortedBins[0][2].append(item)
             sortedBins[0][1] += peso
             allocated = 1
         else:
-            sortedBins[j][2].append(item)
-            sortedBins[j][1] += peso
+            Bins[sortedBins[j][0]][2].append(item)
+            Bins[sortedBins[j][0]][1] += peso
             allocated = 1
     else:
         sortedBins[-1][2].append(item)
