@@ -98,7 +98,7 @@ def binAddNF(item, peso):
         if(Bins[nextBin][1] + peso) > 1:
             sortedBins[0][2].append(item)
             sortedBins[0][1] += peso
-            nextBin = ¿?¿?
+            nextBin = sortedBins[0][0]
             allocated = 1
         else:
             Bins[nextBin][2].append(item)
@@ -117,7 +117,7 @@ def binAddBF(item, peso):
     # Assign to the most occupied one
     # - IF same occupation --> Assign to lower index
     # if "occupation level + peso" > 1 --> Assign to 1st empty core
-    
+
     if (allocated == 0):
         raise
 
