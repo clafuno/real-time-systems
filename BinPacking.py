@@ -36,7 +36,6 @@ def binAdd(item, peso):
 
     try:
         if (politica is "FF"):
-            print "Policy FF"
             binAddFF(item, peso)
         elif (politica is "NF"):
             binAddNF(item, peso)
@@ -49,7 +48,7 @@ def binAdd(item, peso):
 
 
 def binAddFF(item, peso):
-    print "addFF", item, peso, NBins
+    #print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
 
@@ -59,14 +58,14 @@ def binAddFF(item, peso):
     #print Pesos
 
     if Pesos.count(0.0) == NBins:
-        print "All bins are empty"
+        #print "All bins are empty"
         Bins[0][2].append(item)
         Bins[0][1] += peso
         allocated = 1
 
     else:
         sortedBins = sorted(Bins, key=lambda peso:peso[1])
-        print sortedBins
+        #print sortedBins
         i = Pesos.count(0)
         if (sortedBins[i][1] + peso) > 1:
             sortedBins[0][2].append(item)
