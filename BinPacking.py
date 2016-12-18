@@ -90,29 +90,45 @@ def binAddNF(item, peso):
     #print "addNF", item, peso
     global nextBin
     allocated = 0
+
+    Pesos = []
     for i in range(NBins):
         Pesos.append(Bins[i][1])
-    # Assign to the same core as last one
-    if Pesos.count(0.0) == NBins:
-        #print "All bins are empty"
-        Bins[0][2].append(item)
-        Bins[0][1] += peso
-        nextBin = 0
+
+    if (Pesos[nextBin] + peso) <= 1:
+        print Pesos[nextBin], peso
+        Bins[nextBin][2].append(item)
+        Bins[nextBin][1] += peso
         allocated = 1
-    # if "occupation level + peso" > 1 --> Assign to 1st empty core
     else:
-        sortedBins = sorted(Bins, key=lambda peso:peso[1])
-        #print sortedBins
-        i = Pesos.count(0)
-        if(Bins[nextBin][1] + peso) > 1:
-            sortedBins[0][2].append(item)
-            sortedBins[0][1] += peso
-            nextBin = sortedBins[0][0]
-            allocated = 1
-        else:
-            Bins[nextBin][2].append(item)
-            Bins[nextBin][1] += peso
-            allocated = 1
+        nextBin = Pesos.index(0)
+        print nextBin
+        Bins[nextBin][2].append(item)
+        Bins[nextBin][1] += peso
+        allocated = 1
+
+
+    # # Assign to the same core as last one
+    # if Pesos.count(0.0) == NBins:
+    #     #print "All bins are empty"
+    #     Bins[0][2].append(item)
+    #     Bins[0][1] += peso
+    #     nextBin = 0
+    #     allocated = 1
+    # # if "occupation level + peso" > 1 --> Assign to 1st empty core
+    # else:
+    #     sortedBins = sorted(Bins, key=lambda peso:peso[1])
+    #     #print sortedBins
+    #     i = Pesos.count(0)
+    #     if(Bins[nextBin][1] + peso) > 1:
+    #         sortedBins[0][2].append(item)
+    #         sortedBins[0][1] += peso
+    #         nextBin = sortedBins[0][0]
+    #         allocated = 1
+    #     else:
+    #         Bins[nextBin][2].append(item)
+    #         Bins[nextBin][1] += peso
+    #         allocated = 1
 
     if (allocated == 0):
         raise
