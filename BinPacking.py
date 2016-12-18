@@ -144,3 +144,4 @@ def show():
     for i in range(len(Pesos)):
         spesos += Pesos[i]
     print "Bins:", Bins, "\n Pesos:", Pesos, "Suma Pesos: ",spesos
+    del Bins[:]
