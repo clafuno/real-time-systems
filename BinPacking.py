@@ -22,8 +22,10 @@ def initBin(metodo, nbins):
     else:
         raise Invalid_Param
 
+    #Bins = []
     for i in range(NBins):
         Bins.append([i,0.0,[]]) # List of bin - total weight - processes
+    print Bins
     init = 1
     nextBin = 0
     print "Successful"
@@ -50,24 +52,47 @@ def binAddFF(item, peso):
     print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
-    # Sort list of bins according to weight
-    sortedBins = sorted(Bins, key=lambda peso:peso[1])
-    print sortedBins
-    
+    # # Sort list of bins according to weight
+    # sortedBins = sorted(Bins, key=lambda peso:peso[1])
+    # print sortedBins
+    Pesos = []
+    for i in range(NBins):
+        Pesos.append(Bins[i][1])
+    print Pesos
 
-    if sortedBins[1].count(0.0) == NBins:
+    #look for min
+    minBin = Pesos.index(min(Pesos))
+    print minBin
+
+    if Pesos.count(0.0) == NBins:
         print "All bins are empty"
-        sortedBins[0][2].add(item)
-        sortedBins[0][1] += peso
+        Bins[0][2].append(item)
+        Bins[0][1] += peso
         allocated = 1
+
     else:
-        print "Hey there"
+        #pesis = filter(lambda a: a != 0, Pesos) # Removes null values
+        #print pesis, Pesos
+        #minBin = Bins.index(min(Bins[:][1]))
+        sortedBins = sorted(Bins, key=lambda peso:peso[1])
+        #print sortedBins
+        i = Pesos.count(0)
+        #print i
+        if (Pesos[i] + peso) > 1:
+            Bins[0][2].append(item)
+            Bins[0][1] += peso
+            allocated = 1
+        else:
+            Bins[i][2].append(item)
+            Bins[i][1] += peso
+            allocated = 1
+
 
     # if sortedBins.count(0) == NBins:
     #     Bins[0].add(item)
     #     Pesos[0] += peso
     #     allocated = 1
-    #     print "Allocated!"
+    #     print "allocated!"
 
     # else:
     #     if (Pesos[Pesos.count(0)] + peso) <= 1:
