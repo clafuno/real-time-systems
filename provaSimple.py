@@ -17,18 +17,57 @@ def main (argv):
 
 # first-fit ############################################################
 
+    # pIncr = sorted(Particiones, key=lambda Particiones: Particiones[1])
+
+    # try:
+    #     BinPacking.initBin("FF", 4)
+    #     lst = pIncr
+    #     while (len(lst) > 0):
+    #             part = lst.pop(0)
+    #             BinPacking.binAdd(part[0], part[1])
+    # except:
+    #     print "Error: FF , Not Allocated"
+    # print "First-Fit Incremental:"
+    # BinPacking.show()
+    
+    # pIncr = sorted(Particiones, key=lambda Particiones: Particiones[1])
+
+    # try:
+    #     BinPacking.initBin("FF", 4)
+    #     lst = pIncr
+    #     while (len(lst) > 0):
+    #             part = lst.pop()
+    #             BinPacking.binAdd(part[0], part[1])
+    # except:
+    #     print "Error: FF , Not Allocated"
+    # print "First-Fit Decremental:"
+    # BinPacking.show()
+
+# next-fit ############################################################
     pIncr = sorted(Particiones, key=lambda Particiones: Particiones[1])
 
     try:
-        BinPacking.initBin("FF", 4)
+        BinPacking.initBin("NF", 4)
         lst = pIncr
         while (len(lst) > 0):
                 part = lst.pop(0)
                 BinPacking.binAdd(part[0], part[1])
     except:
-        print "Error: FF , Not Allocated"
-    print "First-Fit Incremental:"
+        print "Error: NF , Not Allocated"
+    print "Next-Fit Incremental:"
     BinPacking.show()
 
+    pIncr = sorted(Particiones, key=lambda Particiones: Particiones[1])
+
+    try:
+        BinPacking.initBin("NF", 4)
+        lst = pIncr
+        while (len(lst) > 0):
+                part = lst.pop()
+                BinPacking.binAdd(part[0], part[1])
+    except:
+        print "Error: NF , Not Allocated"
+    print "Next-Fit Decremental:"
+    BinPacking.show()
 
 main (sys.argv)
