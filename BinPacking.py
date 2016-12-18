@@ -52,17 +52,11 @@ def binAddFF(item, peso):
     print "addFF", item, peso, NBins
     global Pesos
     allocated = 0
-    # # Sort list of bins according to weight
-    # sortedBins = sorted(Bins, key=lambda peso:peso[1])
-    # print sortedBins
+
     Pesos = []
     for i in range(NBins):
         Pesos.append(Bins[i][1])
-    print Pesos
-
-    #look for min
-    minBin = Pesos.index(min(Pesos))
-    print minBin
+    #print Pesos
 
     if Pesos.count(0.0) == NBins:
         print "All bins are empty"
@@ -71,47 +65,20 @@ def binAddFF(item, peso):
         allocated = 1
 
     else:
-        #pesis = filter(lambda a: a != 0, Pesos) # Removes null values
-        #print pesis, Pesos
-        #minBin = Bins.index(min(Bins[:][1]))
         sortedBins = sorted(Bins, key=lambda peso:peso[1])
-        #print sortedBins
+        print sortedBins
         i = Pesos.count(0)
-        #print i
-        if (Pesos[i] + peso) > 1:
-            Bins[0][2].append(item)
-            Bins[0][1] += peso
+        if (sortedBins[i][1] + peso) > 1:
+            sortedBins[0][2].append(item)
+            sortedBins[0][1] += peso
             allocated = 1
         else:
-            Bins[i][2].append(item)
-            Bins[i][1] += peso
+            sortedBins[i][2].append(item)
+            sortedBins[i][1] += peso
             allocated = 1
 
-
-    # if sortedBins.count(0) == NBins:
-    #     Bins[0].add(item)
-    #     Pesos[0] += peso
-    #     allocated = 1
-    #     print "allocated!"
-
-    # else:
-    #     if (Pesos[Pesos.count(0)] + peso) <= 1:
-    #         Bins[Pesos.count(0)].add(item)
-    #         Pesos[Pesos.count(0)] += peso 
-    #         allocated = 1
-    #         print "Allocated!"
-
-    #     else:
-    #         Bins[Pesos.count(0)-1].add(item)
-    #         Pesos[Pesos.count(0)-1] += peso 
-    #         allocated = 1
-    #         print "Allocated!"
-
-    # # Assign to the least occupied BUT != 0
-    # # if "occupation level + peso" > 1 --> Assign to 1st empty core
-    
-    # if (allocated == 0):
-    #     raise
+    if (allocated == 0):
+        raise
 
 def binAddNF(item, peso):
     #print "addNF", item, peso
@@ -162,7 +129,7 @@ def binUtil(idx):
 
 def binUtilAll():
 #    "devuelve la lista de los pesos"
-     return 1
+    return 1
 
 def binDiscrepancy():
 #    "devuelve una lista con las diferencias de peso de los bins. Por ejemplo: si la 0: 40, 1: 50, 2:60  3: 38"
@@ -171,8 +138,10 @@ def binDiscrepancy():
 
 def show():
     spesos = 0.0
+    Pesos = []
+    for i in range(NBins):
+        Pesos.append(Bins[i][1])
+
     for i in range(len(Pesos)):
         spesos += Pesos[i]
     print "Bins:", Bins, "\n Pesos:", Pesos, "Suma Pesos: ",spesos
-
-
