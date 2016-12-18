@@ -84,7 +84,26 @@ def binAddNF(item, peso):
     global nextBin
     allocated = 0
     # Assign to the same core as last one
+    if Pesos.count(0.0) == NBins:
+        #print "All bins are empty"
+        Bins[0][2].append(item)
+        Bins[0][1] += peso
+        nextBin = 0
+        allocated = 1
     # if "occupation level + peso" > 1 --> Assign to 1st empty core
+    else:
+        sortedBins = sorted(Bins, key=lambda peso:peso[1])
+        #print sortedBins
+        i = Pesos.count(0)
+        if(Bins[nextBin][1] + peso) > 1:
+            sortedBins[0][2].append(item)
+            sortedBins[0][1] += peso
+            nextBin = ¿?¿?
+            allocated = 1
+        else:
+            Bins[nextBin][2].append(item)
+            Bins[nextBin][1] += peso
+            allocated = 1
 
     if (allocated == 0):
         raise
@@ -98,7 +117,7 @@ def binAddBF(item, peso):
     # Assign to the most occupied one
     # - IF same occupation --> Assign to lower index
     # if "occupation level + peso" > 1 --> Assign to 1st empty core
-
+    
     if (allocated == 0):
         raise
 
