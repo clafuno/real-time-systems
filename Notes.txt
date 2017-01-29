@@ -1,0 +1,35 @@
+Para EDF, cambiar prioridad de RM por el plazo absoluto
+Cada vex que entra a la cola de bloqueados, se modifica su plazo absoluto
+
+Para cola de bloqueados:
+Ordenar procesos primero por tiempo de activación y luego por prioridad
+
+nextActivation = numActivaciones * periodo
+
+PLANIFICADOR
+
+1- Construir tareas
+2- if Local --> Bin Packing : asociar tareas a cores y sacar lista de tareas en cada core
+3- Asignar prioridades
+
+	t1 20,20,5
+	t2 30,30,6
+	t3 50,50,10
+
+	READY QUEUE: (20)(T1)
+				  (30)(T2)
+				  (50)(T3)
+				  *T1 volerá a entrar con valor 40 cuando se cumpla su ejecución
+
+
+	Release queue: (0,20)()
+					(0,30)()
+					(0,50)
+
+	Release queue: (20,40)() *40 = plazo absoluto == NEXT DEADLINE
+
+
+Para planificadores locales, el Planificador ha de pasarse a clase, para poder tener varias instancias, y se apliquen a cada core independientemente
+
+
+Activationtime = releaseTime[0][0][0] 
