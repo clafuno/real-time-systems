@@ -45,14 +45,25 @@ def traceExecEnd(ncore, time, taskId):
     
 def traceShow(ncore):
     res = ""
+    chrono = []
     trz = Traces[ncore]
+    print trz
     for i in range(len(trz)):
         if ("TB" in trz[i]):
             startTime = trz[i][2]
             res += trz[i][0] + " [" + str(startTime)
+            # j = i
+            # print j
+            chrono.append([trz[i][0], startTime])
+            # print chrono[j]
+
         elif ("TE" in trz[i]):
             endTime = trz[i][2]
             duration = endTime - startTime
             res += ", " + str(duration) + "]\n"
+            chrono[-1].append(endTime)
+
     print res
     print Activations
+
+    print "Chrono: ", chrono
