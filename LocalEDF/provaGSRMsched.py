@@ -24,6 +24,7 @@ def main (argv):
     mCores = 2 # Cores in the system
 
     parts = []
+    partInCore = []
     System.defineSystem(mCores, globalUtil)
 
     	
@@ -58,14 +59,18 @@ def main (argv):
     print "No Partitions: ", System.numberPartitions()
     System.show()
     
-    GSRM.schedInit()
-    for i in range(nPartCriticas):
-        pid = "P"+str(i+1)
-        GSRM.scheAddPartition(pid)
-    
+    for i in range(mCores):
+        cs = Model.coreById(cid[i]); #Id of core
+        partInCore.append(cs.coreParts())
+    print partInCore
 
-    print "Tasks: "
-    GSRM.showTasks()
-    GSRM.schedRun(100)
+    for i in range(mCores):
+        GSRM.schedInit()
+        for j in range(len(partInCore[i])):
+            pid = partInCore[i][j]
+            GSRM.scheAddPartition(pid)
+        print "Core: ", i, " Tasks: "
+        GSRM.showTasks()
+        GSRM.schedRun(50)
         
 main (sys.argv)

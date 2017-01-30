@@ -7,10 +7,6 @@ import Model
 import Utils
 import Tracer
 
-readyQueue = []   # this is a heap
-releaseTime = []
-blockedTasks = [] # this is a list
-
 tasksIds = []
 tasks = {}
 
@@ -30,6 +26,10 @@ def schedInit():
     clock = 0
     tasksIds = []
     tasks = {}
+    global readyQueue, releaseTime, blockedTasks
+    readyQueue = []   # this is a heap
+    releaseTime = []
+    blockedTasks = [] # this is a list
 
 
 def scheAddPartition(pid):
@@ -65,9 +65,9 @@ def schedRun(ticks):
     prio = 1
     for i in range(len(tList)):
         t = tList[i]
-        #         tid, period, rdeadline, absdel, wcet, abswcet, texe, nact)
-        values = (t[1], t[0], t[2], t[2], t[3], t[3], 0, 0)
-    	prio = t[2] # priority is equal to deadline
+        #         tid, period, rdeadline, absdel, wcet, texe, nact)
+        values = (t[1], t[0], t[2], t[2], t[3], 0, 0)
+    	prio = t[2] # priority is equal to abs_deadline
         heappush(releaseTime, ((0, prio), (values) ))
     
     print releaseTime
@@ -76,57 +76,55 @@ def schedRun(ticks):
     clock = 0
     pTaskId = "X"
     
-    while (clock < hyper):
-        minReleaseTime = 9999
-        minWCET = 9999
+    # while (clock < hyper):
+    #     minReleaseTime = 9999
+    #     minWCET = 9999
 
-        # check if there are tasks waiting
-        if (len(releaseTime) > 0): 
-            (minReleaseTime,prioRelease) = releaseTime[0][0] # activation time and period(prio)
+    #     # check if there are tasks waiting
+    #     if (len(releaseTime) > 0): 
+    #         (minReleaseTime,prioRelease) = releaseTime[0][0] # activation time and period(prio)
 
-        # check if there are tasks running
-        if (len(readyQueue) > 0):
-            minWCET = readyQueue[0][1][5] # wcet of the task with closer period
+    #     # check if there are tasks running
+    #     if (len(readyQueue) > 0):
+    #         minWCET = readyQueue[0][1][5] # wcet of the task with closer period
 
-        if (minWCET <= minReleaseTime): # Finishing time of running task is closer than next period/deadline
-            ### Finish the execution of the task due to wcet and add it to releaseTime ###
+    #     if (minWCET <= minReleaseTime): # Finishing time of running task is closer than next period/deadline
+    #         ### Finish the execution of the task due to wcet and add it to releaseTime ###
 
-            ((prio), (cTaskId, period, rdead, adead, wcet, abswcet, texec, nActiv)) = heappop(readyQueue) # running task
-            texec =  releaseAt + wcet # update execution time of the tast
-            clock = abswcet # clock is set to the moment the task finishes
+    #         ((prio), (cTaskId, period, rdead, adead, wcet, texec, nActiv)) = heappop(readyQueue) # running task
+    #         texec =  releaseAt + wcet # update execution time of the tast
 
-            # Task finishes execution because we are in wcet instant
-            Tracer.traceExecEnd(0, clock, cTaskId)
-            nxtActiv = nActiv * period
-            adead = nxtActiv + rdead
-            abswcet = nxtActiv + wcet ## Update wcet
+    #         if()
+
+    #         clock = prio[0] + texec # clock is set to the moment the task finishes
+
+    #         # Task finishes execution because we are in wcet instant
+    #         Tracer.traceExecEnd(0, clock, cTaskId)
+    #         nxtActiv = nActiv * period
+    #         adead = nxtActiv + rdead
+    #         prio = adead #Update priority to next
             
-            # Insert task in ready process.
-            heappush(releaseTime, ((nxtActiv, prio), (cTaskId, period, rdead, adead, wcet, abswcet, 0, nActiv)))
+    #         # Insert task in ready process.
+    #         heappush(releaseTime, ((nxtActiv, prio), (cTaskId, period, rdead, adead, wcet, 0, nActiv)))
 
-        else: # Next activation of a task is closer than finishing time of another
-            ### Check deadline and/or activate the task ###
+    #     else: # Next activation of a task is closer than finishing time of another
+    #         ### Check deadline and/or activate the task ###
 
-            
-            
+    #         if() # check if the task has finished before deadline
 
-            (releaseAt, prio) = releaseTime[0][0]
-            clock = # update clock
-            while (clock  == releaseAt):
-                # Move task from releaseTime to readyQueue
-                (tid, period, rdead, adead, wcet, texec, nActiv) = releaseTime[0][1]
-                t = heappop(releaseTime)
-                heappush(readyQueue, ((prio), (tid, period, rdead, adead, wcet, 0, nActiv + 1)))
+
+    #         (releaseAt, prio) = releaseTime[0][0]
+    #         clock = # update clock
+    #         while (clock  == releaseAt):
+    #             # Move task from releaseTime to readyQueue
+    #             (tid, period, rdead, adead, wcet, texec, nActiv) = releaseTime[0][1]
+    #             t = heappop(releaseTime)
+    #             heappush(readyQueue, ((prio), (tid, period, rdead, adead, wcet, 0, nActiv + 1)))
                 
-                if (len(releaseTime) > 0): # IF there are processes to schedule
-                    (releaseAt, prio) = releaseTime[0][0]
-                else:
-                    releaseAt = clock + 999
-
-
-
-
-
+    #             if (len(releaseTime) > 0): # IF there are processes to schedule
+    #                 (releaseAt, prio) = releaseTime[0][0]
+    #             else:
+    #                 releaseAt = clock + 999
 
 
     while (clock < hyper):
@@ -160,7 +158,7 @@ def schedRun(ticks):
             clock = clock + 1
             texec += 1
 
-            if (texec < wcet): # Pendent de finalitzar execució
+            if (texec < wcet): # Pendent de finalitzar execucio
                 heappush(readyQueue, ((prio), (cTaskId, period, rdead, adead, wcet, texec, nActiv)))
             else: # Finished execution
                 Tracer.traceExecEnd(0, clock, cTaskId)
