@@ -86,7 +86,7 @@ def schedRun(ticks):
 
     #     # check if there are tasks running
     #     if (len(readyQueue) > 0):
-    #         minWCET = readyQueue[0][1][5] # wcet of the task with closer period
+    #         minWCET = readyQueue[0][1][4] # wcet of the task with closer period
 
     #     if (minWCET <= minReleaseTime): # Finishing time of running task is closer than next period/deadline
     #         ### Finish the execution of the task due to wcet and add it to releaseTime ###
@@ -135,7 +135,9 @@ def schedRun(ticks):
             while (clock  == releaseAt):
                 (tid, period, rdead, adead, wcet, texec, nActiv) = releaseTime[0][1]
                 t = heappop(releaseTime)
+                prio = adead
                 heappush(readyQueue, ((prio), (tid, period, rdead, adead, wcet, 0, nActiv + 1)))
+                print "Ready: ", readyQueue
                 nitems -= 1
                 if (nitems > 0):
                     (releaseAt, prio) = releaseTime[0][0]
@@ -170,6 +172,7 @@ def schedRun(ticks):
         	clock = clock + 1
 
         pTaskId = cTaskId
+        #print readyQueue
 
     Tracer.traceShow(0)
     print "Hyperperiodo = ", hyper, " Clock: ", clock
