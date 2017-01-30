@@ -12,6 +12,7 @@ from Core import Core
 import System
 import Model
 import GSRM
+import BinPacking
 
 #-------------------------#
 #          MAIN           #
@@ -28,7 +29,7 @@ def main (argv):
     System.defineSystem(mCores, globalUtil)
 
     	
-    nPartCriticas = 4
+    nPartCriticas = 3
     # Parameters partitions
     params = ((20,4,0.2), (30, 6, 0.2), (50, 8, 0.16), (60, 12, 0.2))
     
@@ -51,8 +52,15 @@ def main (argv):
         System.addPartition(pid)
         Model.addPartModel(pid, p1)
 
-        core = Model.coreById(cid[i%mCores]) # Select core for partition
-        core.coreAddPartU(pid, u) # Assign partition to core
+        BinPacking.initBin("FF", mCores)
+        core = BinPacking.binAdd(tid, u)
+        print "core bn: ",core
+        coreId = Model.coreById(cid[core])
+        coreId.coreAddPartU(pid, u)
+
+        ## This works (FF)
+        # core = Model.coreById(cid[i%mCores]) # Select core for partition 
+        # core.coreAddPartU(pid,u) # Assign partition to core
         p1.show()
 
         
@@ -71,6 +79,6 @@ def main (argv):
             GSRM.scheAddPartition(pid)
         print "Core: ", i, " Tasks: "
         GSRM.showTasks()
-        GSRM.schedRun(50)
+        #GSRM.schedRun(50)
         
 main (sys.argv)
