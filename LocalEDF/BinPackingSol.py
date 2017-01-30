@@ -33,13 +33,14 @@ def initBin(metodo, nbins):
     nextBin = 0
     nFallos = 0
 
-def binAdd(item, peso):      
+def binAdd(item, peso, politica, bins):      
 # "anade un item a una de las lista con un peso de acuerdo al metodo y criterio definido en initBins"
     #print "binAdd", item, peso
+    NBins = bins
 
     try:
         if (politica is "FF"):
-            binAddFF(item, peso)
+            c = binAddFF(item, peso)
         elif (politica is "NF"):
        	    binAddNF(item, peso)
         elif (politica is "BF"):
@@ -47,8 +48,8 @@ def binAdd(item, peso):
         elif (politica is "WF"):
        	    binAddWF(item, peso)
     except:
-        raise 
-
+        raise
+    return c
 
 
 def binAddFF(item, peso):
@@ -65,7 +66,8 @@ def binAddFF(item, peso):
         i += 1
     if (allocated == 0):
         nFallos += 1
-        raise 
+        raise
+    return i
 
 def binAddNF(item, peso):
     #print "addNF", item, peso
