@@ -21,7 +21,7 @@ def main (argv):
     print 'Number of arguments:', len(sys.argv), 'arguments.'
     print 'Argument List:', str(sys.argv)
 
-    globalUtil = 0.8
+    globalUtil = 0.5
     mCores = 2 # Cores in the system
 
     parts = []
@@ -52,13 +52,14 @@ def main (argv):
         System.addPartition(pid)
         Model.addPartModel(pid, p1)
 
-        BinPacking.initBin("FF", mCores)
+        ## Bin Packing
+        BinPacking.initBin("FF", mCores, globalUtil)
         core = BinPacking.binAdd(tid, u)
         print "core bn: ",core
         coreId = Model.coreById(cid[core])
         coreId.coreAddPartU(pid, u)
 
-        ## This works (FF)
+        ## This works (One partition to each core)
         # core = Model.coreById(cid[i%mCores]) # Select core for partition 
         # core.coreAddPartU(pid,u) # Assign partition to core
         p1.show()

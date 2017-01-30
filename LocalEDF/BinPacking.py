@@ -9,10 +9,11 @@ Bins = []
 Pesos = []
 nextBin = 0
 init = 0
+globalUtil = 0
 
 
-def initBin(metodo, nbins):
-    global politica,  NBins, Pesos, init, nextBin
+def initBin(metodo, nbins, globalU):
+    global politica,  NBins, Pesos, init, nextBin, globalUtil
     if (metodo in politicas): # checks if the policy is among the ones in list
         politica = metodo;
     else:
@@ -22,6 +23,8 @@ def initBin(metodo, nbins):
         NBins = nbins
     else:
         raise Invalid_Param
+
+    globalUtil = globalU
 
     #Bins = []
     for i in range(NBins):
@@ -56,7 +59,7 @@ def binAddFF(item, peso):
     #print Pesos
 
     for i in range(NBins):
-        if (Pesos[i] + peso) <= 1: # If it fits
+        if (Pesos[i] + peso) <= globalUtil: # If it fits
             Bins[i][2].append(item)
             Bins[i][1] += peso
             allocated = 1
@@ -75,7 +78,7 @@ def binAddNF(item, peso):
     for i in range(NBins):
         Pesos.append(Bins[i][1])
 
-    if (Pesos[nextBin] + peso) <= 1:
+    if (Pesos[nextBin] + peso) <= globalUtil:
         #print Pesos[nextBin], peso
         Bins[nextBin][2].append(item)
         Bins[nextBin][1] += peso
@@ -104,7 +107,7 @@ def binAddBF(item, peso):
     #Count occurrences of max value
 
     for i in range(NBins):
-        capacity[i] = 1 - sortedBins[i][1]
+        capacity[i] = globalUtil - sortedBins[i][1]
     #print peso, item
 
 
@@ -131,7 +134,7 @@ def binAddWF(item, peso):
     #Count occurrences of max value
 
     for i in range(NBins):
-        capacity[i] = 1 - sortedBins[i][1]
+        capacity[i] = globalUtil - sortedBins[i][1]
     #print peso, item
 
 
