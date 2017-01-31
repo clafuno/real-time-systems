@@ -53,6 +53,8 @@ def schedRun(ticks):
     global tasks
     tperiods = []
     tList = []
+    chrono = []
+
     for i in range(len(tasksIds)):
         tsk = Model.taskById(tasksIds[i])
         tperiods.append(tsk.taskPeriod())
@@ -139,10 +141,10 @@ def schedRun(ticks):
         cycles += 1
       
 
-    Tracer.traceShow(0)
+    chrono = Tracer.traceShow(0)
     print "Hyperperiodo = ", hyper, " Clock: ", clock, " Cycles: ", cycles
 
-
+    return chrono, clock
 
 
 

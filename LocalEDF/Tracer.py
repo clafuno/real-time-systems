@@ -62,3 +62,4 @@ def traceShow(ncore):
     print Activations
 
     print "Chrono: ", chrono
+    return chrono
