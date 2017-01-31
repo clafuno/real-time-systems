@@ -13,6 +13,7 @@ import System
 import Model
 import LSEDFe
 import BinPacking
+import chronogram
 
 #-------------------------#
 #          MAIN           #
@@ -21,15 +22,19 @@ def main (argv):
     print 'Number of arguments:', len(sys.argv), 'arguments.'
     print 'Argument List:', str(sys.argv)
 
+    ## Inicialization
     globalUtil = 0.8
-    mCores = 3 # Cores in the system
+    mCores = 1 # Cores in the system
+    nPartCriticas = 4 # nPartitions = nTasks
+
 
     parts = []
-    partInCore = []
+    partInCore = [] # i = core index. Cotains paritions in each core.
+    chrono = [] # trace for representation
+    Texec = [] # execution time of the system
     System.defineSystem(mCores, globalUtil)
 
     	
-    nPartCriticas = 8
     # Parameters partitions
     params = ((20,4,0.2), (30, 6, 0.2), (50, 8, 0.16), (60, 12, 0.5), (10,2,0.15),(40,5,0.3), (70, 4, 0.5), (35, 3, 0.2))
     
@@ -69,9 +74,10 @@ def main (argv):
     print "No Partitions: ", System.numberPartitions()
     System.show()
     
+
     for i in range(mCores):
         cs = Model.coreById(cid[i]); #Id of core
-        partInCore.append(cs.coreParts())
+        partInCore.append(cs.coreParts()) #Vector containing partitions in core
     print partInCore
 
     for i in range(mCores):
@@ -81,6 +87,29 @@ def main (argv):
             LSEDFe.scheAddPartition(pid)
         print "Core: ", i, " Tasks: "
         LSEDFe.showTasks()
-        LSEDFe.schedRun(100)
+        a, clock = LSEDFe.schedRun(100)
+        chrono.append(a)
+        Texec.append(clock)
+
+    ## Representation
+
+    hyper = max(Texec)
+    
+    print "Hyper: ", hyper
+    chronogram.chronoInit(mCores, hyper, "chrono")
+
+    #Pone una linea por cada core con su nombre: C0, C1, C2, .....    
+    for i in range(mCores):
+        chronogram.chronoAddLine(i, "C"+str(i))
+
+    #listaEjecuciones = chrono[i]
+    for i in range(mCores):
+        for le in chrono[i]:
+            (tsk, start, end) = le
+            chronogram.chronoAddExec(i, start, end, tsk)
+
+    chronogram.chronoClose()
+
+
         
 main (sys.argv)
