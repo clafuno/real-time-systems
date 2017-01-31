@@ -11,7 +11,7 @@ from Partition import Partition
 from Core import Core
 import System
 import Model
-import LSEDFe
+import LSEDFt
 import BinPacking
 import chronogram
 
@@ -24,8 +24,9 @@ def main (argv):
 
     ## Inicialization
     globalUtil = 0.8
-    mCores = 1 # Cores in the system
+    mCores = 2 # Cores in the system
     nPartCriticas = 4 # nPartitions = nTasks
+    allocationPolicy = "WF" # Policy to allocate tasks in cores ("FF", "NF", "BF", "WF")
 
 
     parts = []
@@ -58,7 +59,7 @@ def main (argv):
         Model.addPartModel(pid, p1)
 
         ## Bin Packing Allocation
-        BinPacking.initBin("BF", mCores, globalUtil)
+        BinPacking.initBin(allocationPolicy, mCores, globalUtil)
         core = BinPacking.binAdd(tid, u)
         print "core bn: ",core
         coreId = Model.coreById(cid[core])
@@ -81,13 +82,13 @@ def main (argv):
     print partInCore
 
     for i in range(mCores):
-        LSEDFe.schedInit()
+        LSEDFt.schedInit()
         for j in range(len(partInCore[i])):
             pid = partInCore[i][j]
-            LSEDFe.scheAddPartition(pid)
+            LSEDFt.scheAddPartition(pid)
         print "Core: ", i, " Tasks: "
-        LSEDFe.showTasks()
-        a, clock = LSEDFe.schedRun(100)
+        LSEDFt.showTasks()
+        a, clock = LSEDFt.schedRun(100)
         chrono.append(a)
         Texec.append(clock)
 
