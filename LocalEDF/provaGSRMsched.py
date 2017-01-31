@@ -11,7 +11,7 @@ from Partition import Partition
 from Core import Core
 import System
 import Model
-import GSRM
+import LSEDFe
 import BinPacking
 
 #-------------------------#
@@ -21,17 +21,17 @@ def main (argv):
     print 'Number of arguments:', len(sys.argv), 'arguments.'
     print 'Argument List:', str(sys.argv)
 
-    globalUtil = 0.5
-    mCores = 2 # Cores in the system
+    globalUtil = 0.8
+    mCores = 3 # Cores in the system
 
     parts = []
     partInCore = []
     System.defineSystem(mCores, globalUtil)
 
     	
-    nPartCriticas = 3
+    nPartCriticas = 8
     # Parameters partitions
-    params = ((20,4,0.2), (30, 6, 0.2), (50, 8, 0.16), (60, 12, 0.2))
+    params = ((20,4,0.2), (30, 6, 0.2), (50, 8, 0.16), (60, 12, 0.5), (10,2,0.15),(40,5,0.3), (70, 4, 0.5), (35, 3, 0.2))
     
     cid = [] #Configuration N cores
     for i in range(mCores):
@@ -52,16 +52,17 @@ def main (argv):
         System.addPartition(pid)
         Model.addPartModel(pid, p1)
 
-        ## Bin Packing
-        BinPacking.initBin("FF", mCores, globalUtil)
+        ## Bin Packing Allocation
+        BinPacking.initBin("BF", mCores, globalUtil)
         core = BinPacking.binAdd(tid, u)
         print "core bn: ",core
         coreId = Model.coreById(cid[core])
         coreId.coreAddPartU(pid, u)
 
-        ## This works (One partition to each core)
+        ## Fast allocation
         # core = Model.coreById(cid[i%mCores]) # Select core for partition 
         # core.coreAddPartU(pid,u) # Assign partition to core
+        
         p1.show()
 
         
@@ -74,12 +75,12 @@ def main (argv):
     print partInCore
 
     for i in range(mCores):
-        GSRM.schedInit()
+        LSEDFe.schedInit()
         for j in range(len(partInCore[i])):
             pid = partInCore[i][j]
-            GSRM.scheAddPartition(pid)
+            LSEDFe.scheAddPartition(pid)
         print "Core: ", i, " Tasks: "
-        GSRM.showTasks()
-        #GSRM.schedRun(50)
+        LSEDFe.showTasks()
+        LSEDFe.schedRun(100)
         
 main (sys.argv)
