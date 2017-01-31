@@ -79,18 +79,18 @@ def binAddNF(item, peso):
         Pesos.append(Bins[i][1])
 
     if (Pesos[nextBin] + peso) <= globalUtil:
-        #print Pesos[nextBin], peso
+        print Pesos[nextBin], peso
         Bins[nextBin][2].append(item)
         Bins[nextBin][1] += peso
         allocated = 1
-        return i
+        return nextBin
     else:
         nextBin = Pesos.index(0)
         #print nextBin
         Bins[nextBin][2].append(item)
         Bins[nextBin][1] += peso
         allocated = 1
-        return i
+        return nextBin
 
     if (allocated == 0):
         print "Error"
@@ -135,14 +135,17 @@ def binAddWF(item, peso):
 
     for i in range(NBins):
         capacity[i] = globalUtil - sortedBins[i][1]
+    print capacity
     #print peso, item
 
 
     for i in range(NBins):
-        #print i, capacity[i],peso
+        print i, capacity[i],peso
         if capacity[i] >= peso:
             sortedBins[i][2].append(item)
             sortedBins[i][1] += peso
+            capacity[i] = capacity[i] - peso
+            print capacity[i]
             allocated = 1
             return i
             break
