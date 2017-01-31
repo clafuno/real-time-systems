@@ -74,8 +74,10 @@ def schedRun(ticks):
     
     Tracer.traceInit(2)
     clock = 0
+    cycles = 0
     pTaskId = "X"
     
+    endQueue = [] # heap
 
     ## Event-ish ###
     while (clock < hyper):
@@ -102,17 +104,25 @@ def schedRun(ticks):
 
             clock = texec # clock is set to the moment the task finishes
 
+            if (clock > adead):
+                print "Task ", cTaskId, " missed at: ", adead, "removed"
+                Tracer.traceExecEnd(0, clock, cTaskId)
+                nxtActiv = nActiv * period
+                adead = nxtActiv + rdead
+                heappush(blockedQueue, ((nxtActiv, prio), (cTaskId, period, rdead, adead, wcet, 0, nActiv)))
+
+            else:
             # Task finishes execution because we are in wcet instant
-            Tracer.traceExecEnd(0, clock, cTaskId)
-            nxtActiv = nActiv * period
-            adead = nxtActiv + rdead
-            prio = adead #Update priority to next
+                Tracer.traceExecEnd(0, clock, cTaskId)
+                nxtActiv = nActiv * period
+                adead = nxtActiv + rdead
+                prio = adead #Update priority to next
             
-            # Insert task in finished process.
-            heappush(blockedQueue, ((nxtActiv, prio), (cTaskId, period, rdead, adead, wcet, 0, nActiv)))
+                # Insert task in finished process.
+                heappush(blockedQueue, ((nxtActiv, prio), (cTaskId, period, rdead, adead, wcet, 0, nActiv)))
 
         elif (minReleaseTime <= minWCET): # Next activation of a task is closer than finishing time of another
-            ### Check deadline and/or activate the task ###
+            ### Activate the task ###
 
             (releaseAt, prio) = blockedQueue[0][0]
             clock = releaseAt # update clock
@@ -126,60 +136,11 @@ def schedRun(ticks):
                     (releaseAt, prio) = blockedQueue[0][0]
                 else:
                     releaseAt = clock + 999
-
-    
-    # ### By-ticks mode ###                    
-    # while (clock < hyper):
-    #     #add tasks in blocked to ready if release time
-    #     nitems = len(blockedQueue)
-    #     if (nitems > 0):
-    #         (releaseAt, prio) = blockedQueue[0][0]
-    #         while (clock  == releaseAt):
-    #             (tid, period, rdead, adead, wcet, texec, nActiv) = blockedQueue[0][1]
-    #             t = heappop(blockedQueue)
-    #             prio = adead
-    #             heappush(readyQueue, ((prio), (tid, period, rdead, adead, wcet, 0, nActiv + 1)))
-    #             nitems -= 1
-    #             if (nitems > 0):
-    #                 (releaseAt, prio) = blockedQueue[0][0]
-    #             else:
-    #                 releaseAt = clock + 999   
-
-    #     if (len(readyQueue) > 0):
-    #         # Take first process from readyQueue
-    #         ((prio), (cTaskId, period, rdead, adead, wcet, texec, nActiv)) = heappop(readyQueue)
-    #         #check deadline miss
-    #         if (clock > adead):
-    #         	print "Task ", cTaskId, " missed at: ", adead, "removed"
-    #         	Tracer.traceExecEnd(0, clock, cTaskId)
-    #             nxtActiv = nActiv * period
-    #             adead = nxtActiv + rdead
-    #             heappush(blockedQueue, ((nxtActiv, prio), (cTaskId, period, rdead, adead, wcet, 0, nActiv)))
-            
-    #         if (pTaskId <> cTaskId): #If it's different
-    #         	Tracer.traceExecBegin(0, clock, cTaskId)
-            
-    #         clock = clock + 1
-    #         texec += 1
-    #         #print "Ready: ", readyQueue
-    #         #print "blockedQueue: ", blockedQueue
-
-    #         if (texec < wcet): # Pendent de finalitzar execucio
-    #             heappush(readyQueue, ((prio), (cTaskId, period, rdead, adead, wcet, texec, nActiv)))
-    #         else: # Finished execution
-    #             Tracer.traceExecEnd(0, clock, cTaskId)
-    #             nxtActiv = nActiv * period
-    #             adead = nxtActiv + rdead
-    #             heappush(blockedQueue, ((nxtActiv, prio), (cTaskId, period, rdead, adead, wcet, 0, nActiv)))
-    #     else: # No hi ha processos pendents de planificar
-    #     	cTaskId = "Idle"
-    #     	clock = clock + 1
-
-    #     pTaskId = cTaskId
-        
+        cycles += 1
+      
 
     Tracer.traceShow(0)
-    print "Hyperperiodo = ", hyper, " Clock: ", clock
+    print "Hyperperiodo = ", hyper, " Clock: ", clock, " Cycles: ", cycles
 
 
 
