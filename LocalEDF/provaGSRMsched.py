@@ -12,6 +12,7 @@ from Core import Core
 import System
 import Model
 import LSEDFt
+import LSEDFe
 import BinPacking
 import chronogram
 
@@ -26,18 +27,18 @@ def main (argv):
     globalUtil = 0.8
     mCores = 2 # Cores in the system
     nPartCriticas = 4 # nPartitions = nTasks
-    allocationPolicy = "WF" # Policy to allocate tasks in cores ("FF", "NF", "BF", "WF")
+    allocationPolicy = "FF" # Policy to allocate tasks in cores ("FF", "NF", "BF", "WF")
+    sched = LSEDFe # Scheduling mode by ticks (LSEDFt) or based on events (LSEDFe)
+
+    # Parameters partitions
+    params = ((20,4,0.2), (30, 6, 0.2), (50, 8, 0.16), (60, 12, 0.5), (10,2,0.15),(40,5,0.3), (70, 4, 0.5), (35, 3, 0.2))
 
 
     parts = []
     partInCore = [] # i = core index. Cotains paritions in each core.
     chrono = [] # trace for representation
     Texec = [] # execution time of the system
-    System.defineSystem(mCores, globalUtil)
-
-    	
-    # Parameters partitions
-    params = ((20,4,0.2), (30, 6, 0.2), (50, 8, 0.16), (60, 12, 0.5), (10,2,0.15),(40,5,0.3), (70, 4, 0.5), (35, 3, 0.2))
+    System.defineSystem(mCores, globalUtil) 	
     
     cid = [] #Configuration N cores
     for i in range(mCores):
@@ -82,13 +83,13 @@ def main (argv):
     print partInCore
 
     for i in range(mCores):
-        LSEDFt.schedInit()
+        sched.schedInit()
         for j in range(len(partInCore[i])):
             pid = partInCore[i][j]
-            LSEDFt.scheAddPartition(pid)
+            sched.scheAddPartition(pid)
         print "Core: ", i, " Tasks: "
-        LSEDFt.showTasks()
-        a, clock = LSEDFt.schedRun(100)
+        sched.showTasks()
+        a, clock = sched.schedRun(100)
         chrono.append(a)
         Texec.append(clock)
 
