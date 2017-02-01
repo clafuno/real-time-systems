@@ -130,20 +130,18 @@ def binAddWF(item, peso):
     allocated = 0
     capacity = [1] * NBins
 
-    sortedBins = sorted(Bins, key=lambda peso:peso[1])
-    #Count occurrences of max value
-
     for i in range(NBins):
-        capacity[i] = globalUtil - sortedBins[i][1]
-    print capacity
+        capacity[i] = globalUtil - Bins[i][1]
     #print peso, item
 
 
     for i in range(NBins):
         print i, capacity[i],peso
-        if capacity[i] >= peso:
-            sortedBins[i][2].append(item)
-            sortedBins[i][1] += peso
+        m = max(capacity)
+        #print "max: ", m
+        if capacity[i] == max(capacity):
+            Bins[i][2].append(item)
+            Bins[i][1] += peso
             capacity[i] = capacity[i] - peso
             print capacity[i]
             allocated = 1
