@@ -63,7 +63,7 @@ def schedRun(ticks):
 
     hyper = Utils.HyperPeriod(tperiods)
     print "Hyperperiodo = ", hyper
-    print "Ticks scheduling"
+    print "------- Ticks scheduling -------"
     tList.sort()   #RM priority
     prio = 1
     for i in range(len(tList)):
